@@ -12,9 +12,9 @@ interface IUser {
 }
 
 export const register = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { username, email, password } = req.body
-    if (!username.trim || !email.trim() || !password.trim()) {
-        res.status(400).json({
+    const { username = "", email = "", password = "" } = req.body
+    if (!username.trim() || !email.trim() || !password.trim()) {
+        return res.status(400).json({
             success: false,
             message: "You are not providing all fields"
         })
@@ -22,7 +22,7 @@ export const register = asyncHandler(async (req: Request, res: Response, next: N
 
     const userExist = await User.findOne({ email })
     if (userExist) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "User already exist with given email."
         })
@@ -30,7 +30,7 @@ export const register = asyncHandler(async (req: Request, res: Response, next: N
 
     const hashPassword = await bcryptHashPassword(password)
     if (!hashPassword) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error while hasing password"
         })
@@ -40,7 +40,7 @@ export const register = asyncHandler(async (req: Request, res: Response, next: N
         username, email, password: hashPassword
     })
     if (!user) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error while creating account."
         })
@@ -57,9 +57,9 @@ export const register = asyncHandler(async (req: Request, res: Response, next: N
 })
 
 export const login = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body
+    const { email = "", password = "" } = req.body
     if (!email.trim() || !password.trim()) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "You are not providing all fields"
         })
@@ -67,17 +67,19 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
 
     const isUserExist = await User.findOne({ email })
     if (!isUserExist) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "Sorry user doesn't exist."
         })
     }
 
+    isUserExist!.isOnline = true
+
     const user = isUserExist as IUser;
 
     const isPasswordCorrect = await bcryptComparePassword(password, user.password)
     if (!isPasswordCorrect) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "Please enter a right password."
         })
@@ -85,11 +87,13 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
 
     const token = await jwtSigh({ _id: user?._id, username: user?.username })
     if (!token) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "Error while signing jwt."
         })
     }
+
+    await isUserExist?.save()
 
     res
         .cookie("access_token", token, {
@@ -110,6 +114,19 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
 })
 
 export const logout = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.user?._id
+
+    const user = await User.findById(id)
+    if(!user){
+        return res.status(400).json({
+            success:false,
+            message:"User doesn't exist"
+        })
+    }
+
+    user.isOnline = false
+    await user.save()
+
     res
         .clearCookie("access_token", {
             httpOnly: true,
