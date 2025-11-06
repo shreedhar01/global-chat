@@ -99,3 +99,19 @@ export const removeUser = asyncHandler(async(req:Request,res:Response,next:NextF
         message:"User deleted successfully"
     })
 })
+
+export const getActiveUser = asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
+    const onlineUsers = await User.find({isOnline:true}).select("username")
+    if(!onlineUsers){
+        return res.status(400).json({
+            success:false,
+            message:"Unable to fetch online user"
+        })
+    }
+
+    res.status(200).json({
+        success:true,
+        message:"Online user fetch successfully",
+        data:onlineUsers
+    })
+})
