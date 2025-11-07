@@ -10,7 +10,7 @@ const Header = () => {
         setPath(location.pathname)
     },[location])
     return (
-        <nav className="first">
+        <nav className="first bg-white dark:bg-background">
             <div className="flex justify-between items-center w-full md:w-7xl border-b py-2 md:py-4 ">
                 <h1 onClick={()=>navigate("/")} className="text-xl font-bold cursor-pointer">ChatApp</h1>
                 <div className="flex gap-2">

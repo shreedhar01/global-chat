@@ -1,8 +1,6 @@
-import React from 'react'
-
 export default function Home() {
     return (
-        <div className='flex flex-col justify-center items-center w-full p-1 md:p-0'>
+        <div className='flex flex-col justify-center items-center w-full px-1 md:px-0 pt-16'>
             <div className='flex flex-col w-full md:w-7xl pt-8 md:pt-16 gap-y-2'>
                 <h1 className='text-3xl md:text-5xl font-brand-normal'>
                     <span className='block'>One Room.</span>
