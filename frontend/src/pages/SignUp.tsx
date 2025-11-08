@@ -41,8 +41,8 @@ export default function SignUp() {
     }
   }
   return (
-    <div className="first h-screen">
-      <div className="flex flex-col w-full md:w-7xl  justify-center items-center gap-y-4">
+    <div className="first">
+      <div className="flex flex-col w-full md:w-7xl  justify-center items-center gap-y-4 h-[90vh]">
         <h1 className="text-xl">Create a account</h1>
         <form onSubmit={handleSubmit} className="border w-65/100 md:w-25/100 p-4 rounded-xl">
           <FieldGroup>
@@ -76,10 +76,10 @@ export default function SignUp() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="password">Confirm Password</FieldLabel>
+                <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
                 <Input
-                  id="password"
-                  type="password"
+                  id="confirm-password"
+                  type="confirm-password"
                   placeholder="••••••••"
                   onChange={e => setConfirmPassword(e.target.value)}
                 />
