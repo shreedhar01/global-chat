@@ -107,8 +107,7 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
             message: "Login successfully",
             data: {
                 _id: user._id,
-                username: user.username,
-                access_token: token
+                username: user.username
             }
         })
 })

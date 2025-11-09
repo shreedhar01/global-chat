@@ -8,7 +8,7 @@ export const socketHandler = (io:Server)=>{
         const user = await User.findById(socket.userId)
         user!.isOnline = true;
 
-        socket.broadcast.emit("user_joined",user?.username)
+        socket.broadcast.emit("user_joined",{username:user?.username})
 
         await user?.save()
         
@@ -18,16 +18,19 @@ export const socketHandler = (io:Server)=>{
 
             // console.log("Type of data:", typeof payload);
             try {
-                await io.emit("message",{
-                    username:payload?.username,
-                    message:payload?.message,
-                    createdAt:Date.now()
-                })
-
-                await Chat.create({
+                const chat  = await Chat.create({
                     sender:socket.userId,
                     message:payload.message
                 })
+
+                await io.emit("message",{
+                    _id:chat._id,
+                    sender:{_id:user?._id,username:user?.username},
+                    message:payload?.message,
+                    createdAt:chat.createdAt,
+                    updatedAt:chat.updatedAt
+                })
+
             } catch (error) {
                 console.log("Error while sending message :: ",error)
             }
@@ -36,7 +39,7 @@ export const socketHandler = (io:Server)=>{
         socket.on("disconnect",async()=>{
             user!.isOnline = false
             await user?.save()
-            socket.broadcast.emit("user_left",user?.username)
+            socket.broadcast.emit("user_left",{username:user?.username})
         })
     })
 }

@@ -51,7 +51,7 @@ export const editUserInfo = asyncHandler(async (req: Request, res: Response, nex
         })
     }
 
-    const user = await User.findById(id)
+    const user = await User.findById(id).select("-password")
     if (!user) {
         return res.status(400).json({
             success: false,

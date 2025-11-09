@@ -14,6 +14,7 @@ export const getAllChat = asyncHandler(async (req: Request, res: Response, next:
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit)
+        .populate("sender","username")
 
     if (!allChat) {
         return res.status(400).json({

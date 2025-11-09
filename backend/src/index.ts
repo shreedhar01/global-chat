@@ -17,7 +17,10 @@ connectDB()
 
         const server = createServer(app)
         const io = new Server(server, {
-            cors: { origin: "*" }
+            cors: { 
+                origin: process.env.ORIGIN ,
+                credentials: true
+            }
         })
 
         io.use(async (socket:CustomSocket, next) => {
