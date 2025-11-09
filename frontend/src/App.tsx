@@ -3,7 +3,8 @@ import {
   Home,
   SignIn,
   SignUp,
-  Dashboard
+  Dashboard,
+  Profile
 } from "./pages";
 import Header from './components/Header';
 import { Toaster } from "react-hot-toast"
@@ -24,9 +25,9 @@ export default function App() {
         <Route path='/sign-up' element={<SignUp />} />
 
         {/* protected routes */}
-        <Route path='/dashboard' element={<Dashboard />} />
         <Route element={<ProtectedRoute />}>
-
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/profile/:_id' element={<Profile />} />
         </Route>
 
         <Route path="*" element={<div>404 Not Found</div>} />
