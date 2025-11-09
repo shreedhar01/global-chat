@@ -1,4 +1,20 @@
+import axios from "axios"
+import { useEffect } from "react"
+import toast from "react-hot-toast"
+
 export default function Home() {
+    useEffect(() => {
+        const healthCheck = async () => {
+            try {
+                await axios.get(`${import.meta.env.VITE_API_URL}/health`)
+                // toast.success("Backend is up and running")
+            } catch (error) {
+                console.error("Error:", error);
+                toast.error("Backend is spin off need 50 seconds to spin up");
+            }
+        }
+        healthCheck()
+    },[])
     return (
         <div className='flex flex-col justify-center items-center w-full px-1 md:px-0 pt-16'>
             <div className='flex flex-col w-full md:w-7xl pt-8 md:pt-16 gap-y-2'>

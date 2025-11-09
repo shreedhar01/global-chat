@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input"
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import toast from "react-hot-toast"
 
 
@@ -31,13 +31,11 @@ export default function SignUp() {
       toast.success("Account created successfully!");
       navigate("/sign-in");
 
-    } catch (err:any) {
-      console.error("Error:", err);
-      const msg =
-        err.response?.data?.message || "Something went wrong. Try again.";
-
-      // setError(err.response?.data || msg);
-      toast.error(msg);
+    } catch (error: unknown) {
+      console.error("Error:", error);
+      const axiosError = error as AxiosError<{ message?: string }>
+      const msg = axiosError.response?.data?.message || "Something went wrong. Try again."
+      toast.error(msg)
     }
   }
   return (

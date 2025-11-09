@@ -8,7 +8,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import toast from 'react-hot-toast'
 import { AuthContextProvider } from '@/contexts/AuthContext'
 
@@ -31,10 +31,11 @@ export default function SignIn() {
       toast.success(res.data.message);
       navigate("/dashboard");
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error:", error);
-      const msg = error.response?.data?.message || "Something went wrong. Try again.";
-      toast.error(msg);
+      const axiosError = error as AxiosError<{ message?: string }>
+      const msg = axiosError.response?.data?.message || "Something went wrong. Try again."
+      toast.error(msg)
     }
   }
 

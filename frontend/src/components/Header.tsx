@@ -2,29 +2,30 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
 import React, { useContext, useEffect, useState } from "react"
 import { AuthContextProvider } from "@/contexts/AuthContext"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import toast from "react-hot-toast"
 
 const Header = () => {
     const [path, setPath] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
-    const { user,setUser } = useContext(AuthContextProvider)
+    const { user, setUser } = useContext(AuthContextProvider)
     useEffect(() => {
         setPath(location.pathname)
     }, [location])
 
-    const handleLogOut = async (e:React.MouseEvent<HTMLButtonElement>) => {
+    const handleLogOut = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/auth/logout`,{},{withCredentials:true})
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
             toast.success(res.data.message)
             setUser(null)
             navigate("/sign-up")
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error:", error);
-            const msg = error.response?.data?.message || "Something went wrong. Try again.";
-            toast.error(msg);
+            const axiosError = error as AxiosError<{ message?: string }>
+            const msg = axiosError.response?.data?.message || "Something went wrong. Try again."
+            toast.error(msg)
         }
     }
     return (

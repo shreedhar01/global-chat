@@ -4,7 +4,8 @@ import {
   SignIn,
   SignUp,
   Dashboard,
-  Profile
+  Profile,
+  NotFound
 } from "./pages";
 import Header from './components/Header';
 import { Toaster } from "react-hot-toast"
@@ -30,7 +31,7 @@ export default function App() {
           <Route path='/profile/:_id' element={<Profile />} />
         </Route>
 
-        <Route path="*" element={<div>404 Not Found</div>} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </BrowserRouter>
   )
