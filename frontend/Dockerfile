@@ -1,0 +1,21 @@
+FROM node:20-alpine AS build
+
+WORKDIR /app
+RUN npm install -g pnpm
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+# Inject Vite env at build time
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
+# Build
+RUN pnpm build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

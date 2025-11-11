@@ -7,9 +7,9 @@ A real-time global chat application built with:
 - Auth: JWT (HTTP-only cookies), bcrypt
 - Infra helpers: pnpm workspaces, modular architecture
 
-## Getting Started
+## Getting Started (Normal Way)
 
-This repository uses `pnpm` workspaces.
+This repository uses `pnpm` .
 
 1. Install dependencies (from project root):
 
@@ -43,6 +43,80 @@ This repository uses `pnpm` workspaces.
 
    - Frontend: `http://localhost:5173`
    - Health check: `http://localhost:8000/health`
+
+
+## Getting Started (Docker Compose)
+
+This project includes a Docker-based setup to run both the backend and frontend with a single command using `docker-compose`.
+
+1. Install dependencies (from project root):
+
+   ```sh
+   pnpm install
+   ```
+
+### Prerequisites
+
+- Docker installed
+- Docker Compose installed (or Docker Desktop with Compose support)
+
+### 1. Configure Environment Variables
+
+Create the backend environment file:
+
+```sh
+cp backend/.env.example backend/.env
+```
+
+Then edit `backend/.env` with your values:
+
+```env
+PORT=8000
+MONGO_DB_URL=<your_mongodb_connection_string>
+JWT_SECRET=<your_jwt_secret>
+JWT_EXPIRE=3d
+COOKIE_EXPIRE=3
+ORIGIN=http://localhost:5173
+```
+
+Notes:
+- `MONGO_DB_URL` must point to a reachable MongoDB instance (local or cloud).
+- `ORIGIN` should match the frontend URL exposed by Docker (`http://localhost:5173` by default).
+
+No separate `.env` is required for the frontend when using the provided `docker-compose.yml` because `VITE_API_URL` is passed as a build argument and set to `http://localhost:8000`.
+
+### 2. Build and Start Services
+
+From the project root:
+
+```sh
+docker-compose up --build
+```
+
+This will:
+- Build and start:
+  - `backend` on `http://localhost:8000`
+  - `frontend` on `http://localhost:5173`
+
+To run in the background:
+
+```sh
+docker-compose up -d
+```
+
+### 3. Access the App
+
+- Frontend: `http://localhost:5173`
+- Backend health check: `http://localhost:8000/health`
+
+### 4. Stopping the Services
+
+To stop and remove containers:
+
+```sh
+docker-compose down
+```
+
 
 ## API Overview (Quick Reference)
 

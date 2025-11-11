@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: shreedhar01/chatapp-backend:v1
+    container_name: chatapp-backend
+    env_file:
+      - backend/.env
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8000
+    image: shreedhar01/chatapp-frontend:v1
+    container_name: chatapp-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
