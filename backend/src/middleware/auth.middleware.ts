@@ -1,17 +1,14 @@
 import type { NextFunction, Request, Response } from "express";
-import { asyncHandler } from "../utils/asyncHandler.js";
 import { jwtVerify } from "../utils/jwt.js";
 import { User } from "../models/user.model.js";
 import type mongoose from "mongoose";
 
 declare global {
-    namespace Express {
-        interface Request {
-            user?: {
-                _id?: mongoose.Types.ObjectId;
-                username?: string;
-                email?: string
-            }
+    interface CustomRequest extends Request {
+        user?: {
+            _id?: mongoose.Types.ObjectId;
+            username?: string;
+            email?: string
         }
     }
 }
@@ -23,7 +20,7 @@ interface IUser {
 }
 
 export const authorization = () => {
-    return async (req: Request, res: Response, next: NextFunction) => {
+    return async (req: CustomRequest, res: Response, next: NextFunction) => {
         try {
             const token = req.cookies.access_token
             if (!token) {
@@ -51,7 +48,7 @@ export const authorization = () => {
 
             const user = isUserExist as IUser
 
-            if (Date.now() > isJwtValid?.exp*1000) {
+            if (Date.now() > isJwtValid?.exp * 1000) {
                 return res
                     .clearCookie("access_token", {
                         httpOnly: true,

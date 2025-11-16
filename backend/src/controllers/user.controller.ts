@@ -1,9 +1,9 @@
-import type { NextFunction, Request, Response } from "express";
+import type { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
 import { bcryptHashPassword } from "../utils/bcrypt.passwordhash.js";
 
-export const getAllUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const getAllUser = asyncHandler(async (req: Request, res: Response) => {
     const allUser = await User.countDocuments()
     if (!allUser) {
         return res.status(400).json({
@@ -20,7 +20,7 @@ export const getAllUser = asyncHandler(async (req: Request, res: Response, next:
     })
 })
 
-export const getUserInfo = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const getUserInfo = asyncHandler(async (req: Request, res: Response) => {
     const _id = req.user?._id
 
     const user = await User.findById(_id).select("-password")
@@ -40,7 +40,7 @@ export const getUserInfo = asyncHandler(async (req: Request, res: Response, next
     })
 })
 
-export const editUserInfo = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const editUserInfo = asyncHandler(async (req: Request, res: Response) => {
     const id = req.user?._id
     const { username = "", password = "" } = req.body
 
@@ -83,7 +83,7 @@ export const editUserInfo = asyncHandler(async (req: Request, res: Response, nex
     })
 })
 
-export const removeUser = asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
+export const removeUser = asyncHandler(async(req:Request,res:Response)=>{
     const id = req.user?._id
 
     const remove = await User.deleteOne({_id:id})
@@ -100,7 +100,7 @@ export const removeUser = asyncHandler(async(req:Request,res:Response,next:NextF
     })
 })
 
-export const getActiveUser = asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
+export const getActiveUser = asyncHandler(async(req:Request,res:Response)=>{
     const onlineUsers = await User.find({isOnline:true}).select("username")
     if(!onlineUsers){
         return res.status(400).json({

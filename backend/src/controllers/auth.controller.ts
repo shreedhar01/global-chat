@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from "express";
+import type { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
 import { bcryptHashPassword, bcryptComparePassword } from "../utils/bcrypt.passwordhash.js";
@@ -11,7 +11,7 @@ interface IUser {
     password: string
 }
 
-export const register = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const register = asyncHandler(async (req: Request, res: Response) => {
     const { username = "", email = "", password = "" } = req.body
     if (!username.trim() || !email.trim() || !password.trim()) {
         return res.status(400).json({
@@ -56,7 +56,7 @@ export const register = asyncHandler(async (req: Request, res: Response, next: N
     })
 })
 
-export const login = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const login = asyncHandler(async (req: Request, res: Response) => {
     const { email = "", password = "" } = req.body
     if (!email.trim() || !password.trim()) {
         return res.status(400).json({
@@ -113,7 +113,7 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
         })
 })
 
-export const logout = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const logout = asyncHandler(async (req: Request, res: Response) => {
     const id = req.user?._id
 
     const user = await User.findById(id)

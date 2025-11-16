@@ -35,7 +35,7 @@ connectDB()
                 const decoded = await jwtVerify(token);
                 socket.userId = decoded._id;
                 next();
-            } catch (err) {
+            } catch {
                 next(new Error("Authentication failed"));
             }
         })

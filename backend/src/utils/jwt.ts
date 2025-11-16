@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import jwt, { type SignOptions } from "jsonwebtoken"
 import type mongoose from "mongoose"
 
 export interface IPlayload{
@@ -13,8 +13,8 @@ export interface IJwtPlayload extends IPlayload{
 
 export const jwtSigh = async(token:IPlayload)=>{
     return await jwt.sign(token,process.env.JWT_SECRET!,{
-        expiresIn:process.env.JWT_EXPIRE as any
-    })
+        expiresIn:process.env.JWT_EXPIRE
+    } as SignOptions)
 }
 
 export const jwtVerify = async(token:string)=>{
