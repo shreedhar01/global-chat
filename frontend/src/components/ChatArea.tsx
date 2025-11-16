@@ -56,7 +56,7 @@ export default function ChatArea() {
     }
 
     loadInitial()
-  }, [limit])
+  }, [user])
 
   useEffect(() => {
     if (!socket) return

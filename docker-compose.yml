@@ -3,7 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: shreedhar01/chatapp-backend:v1
+    image: shreedhar01/chatapp-backend:v2
     container_name: chatapp-backend
     env_file:
       - backend/.env
@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: http://localhost:8000
-    image: shreedhar01/chatapp-frontend:v1
+    image: shreedhar01/chatapp-frontend:v4
     container_name: chatapp-frontend
     depends_on:
       - backend

@@ -99,6 +99,7 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
         .cookie("access_token", token, {
             secure: true,
             httpOnly: true,
+            sameSite:"none",
             maxAge: Number(process.env.COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
         })
         .status(200)

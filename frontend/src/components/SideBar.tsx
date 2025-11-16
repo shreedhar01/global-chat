@@ -38,7 +38,7 @@ export default function SideBar() {
     }
     totalUserData()
     activeUserData()
-  }, [])
+  }, [user])
 
   useEffect(() => {
   if (!socket) return;

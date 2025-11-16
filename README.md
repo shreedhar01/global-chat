@@ -7,6 +7,15 @@ A real-time global chat application built with:
 - Auth: JWT (HTTP-only cookies), bcrypt
 - Infra helpers: pnpm workspaces, modular architecture
 
+##  Hosted Live Demo
+
+**Frontend:** https://chatapp-frontend-v1.onrender.com  
+**Backend:** https://chatapp-backend-v1.onrender.com  
+
+**Note:** Both services are hosted on Render's free tier. Instances spin down after inactivity and take ~50 seconds to wake up on first request.
+
+**Pro Tip:** Click the frontend link first → then immediately on `https://chatapp-backend-v1.onrender.com/health` to wake up the backend instance parallelly to frontend!
+
 ## Getting Started (Normal Way)
 
 This repository uses `pnpm` .
