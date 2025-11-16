@@ -1,5 +1,6 @@
 # root
 node_modules
+committype.txt
 
 # frontend
 frontend/node_modules
