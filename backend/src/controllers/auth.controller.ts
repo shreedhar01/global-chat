@@ -56,7 +56,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     })
 })
 
-export const login = asyncHandler(async (req: Request, res: Response) => {
+export const login = asyncHandler(async (req: CustomRequest, res: Response) => {
     const { email = "", password = "" } = req.body
     if (!email.trim() || !password.trim()) {
         return res.status(400).json({
@@ -113,7 +113,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
         })
 })
 
-export const logout = asyncHandler(async (req: Request, res: Response) => {
+export const logout = asyncHandler(async (req: CustomRequest, res: Response) => {
     const id = req.user?._id
 
     const user = await User.findById(id)

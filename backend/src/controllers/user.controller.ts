@@ -20,7 +20,7 @@ export const getAllUser = asyncHandler(async (req: Request, res: Response) => {
     })
 })
 
-export const getUserInfo = asyncHandler(async (req: Request, res: Response) => {
+export const getUserInfo = asyncHandler(async (req: CustomRequest, res: Response) => {
     const _id = req.user?._id
 
     const user = await User.findById(_id).select("-password")
@@ -40,7 +40,7 @@ export const getUserInfo = asyncHandler(async (req: Request, res: Response) => {
     })
 })
 
-export const editUserInfo = asyncHandler(async (req: Request, res: Response) => {
+export const editUserInfo = asyncHandler(async (req: CustomRequest, res: Response) => {
     const id = req.user?._id
     const { username = "", password = "" } = req.body
 
@@ -83,7 +83,7 @@ export const editUserInfo = asyncHandler(async (req: Request, res: Response) => 
     })
 })
 
-export const removeUser = asyncHandler(async(req:Request,res:Response)=>{
+export const removeUser = asyncHandler(async(req:CustomRequest,res:Response)=>{
     const id = req.user?._id
 
     const remove = await User.deleteOne({_id:id})
