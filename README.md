@@ -99,7 +99,7 @@ No separate `.env` is required for the frontend when using the provided `docker-
 From the project root:
 
 ```sh
-docker-compose up --build
+docker compose build
 ```
 
 This will:
@@ -110,7 +110,7 @@ This will:
 To run in the background:
 
 ```sh
-docker-compose up -d
+docker compose up
 ```
 
 ### 3. Access the App
@@ -123,7 +123,7 @@ docker-compose up -d
 To stop and remove containers:
 
 ```sh
-docker-compose down
+docker compose down
 ```
 
 
