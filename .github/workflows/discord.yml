@@ -21,6 +21,9 @@ on:
       image-tag:
         required: true
         type: string
+    secrets:
+      DISCORD_WEBHOOK_URL:
+        required: true
 
 jobs:
   notify:
@@ -30,12 +33,22 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          COLOR=3066993
-          if [ "${{ inputs.status }}" != "success" ]; then
-            COLOR=15158332
+          # Check if webhook URL exists
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "⚠️ DISCORD_WEBHOOK_URL is empty. Skipping notification."
+            exit 0
           fi
 
-          curl -H "Content-Type: application/json" -X POST -d "{
+          # Set color based on status
+          COLOR=3066993  # Green for success
+          if [ "${{ inputs.status }}" != "success" ]; then
+            COLOR=15158332  # Red for failure
+          fi
+
+          # Send notification
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{
             \"embeds\": [{
               \"title\": \"${{ inputs.job-name }} Deployment: ${{ inputs.status }}\",
               \"color\": ${COLOR},
@@ -45,6 +58,7 @@ jobs:
                 {\"name\": \"Timestamp\", \"value\": \"${{ inputs.timestamp }}\", \"inline\": true},
                 {\"name\": \"Docker Image\", \"value\": \"${{ inputs.image-tag }}\", \"inline\": false}
               ],
-              \"footer\": {\"text\": \"GitHub Actions CI/CD\"}
+              \"footer\": {\"text\": \"GitHub Actions CI/CD\"},
+              \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
             }]
-          }" $WEBHOOK_URL
+          }" "$WEBHOOK_URL"

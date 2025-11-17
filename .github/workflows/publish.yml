@@ -49,6 +49,8 @@ jobs:
     name: Notify Discord Backend
     needs: [backend, setup]
     uses: ./.github/workflows/discord.yml
+    secrets:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     with:
       status: ${{ needs.backend.result }}
       job-name: Backend
@@ -92,6 +94,8 @@ jobs:
     name: Notify Discord Frontend
     needs: [frontend, setup]
     uses: ./.github/workflows/discord.yml
+    secrets:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     with:
       status: ${{ needs.frontend.result }}
       job-name: Frontend
