@@ -45,7 +45,7 @@ export default function ChatArea() {
         })
 
         const { chat: chatData, page: serverPage, totalPage: serverTotal } = res.data.data
-        setChat(chatData)
+        setChat(chatData.reverse())
         setPage(serverPage)
         setTotalPage(serverTotal)
       } catch (error) {
@@ -125,7 +125,7 @@ export default function ChatArea() {
             withCredentials: true,
           })
 
-          const olderMessages: IChat[] = res.data.data.chat
+          const olderMessages: IChat[] = res.data.data.chat.reverse()
 
           setChat(pre => pre ? [...olderMessages, ...pre] : [...olderMessages])
           setPage(nextPage)
