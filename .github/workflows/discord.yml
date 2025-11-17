@@ -1,0 +1,50 @@
+name: Discord Notification
+
+on:
+  workflow_call:
+    inputs:
+      status:
+        required: true
+        type: string
+      job-name:
+        required: true
+        type: string
+      commit-message:
+        required: true
+        type: string
+      author:
+        required: true
+        type: string
+      timestamp:
+        required: true
+        type: string
+      image-tag:
+        required: true
+        type: string
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Notification
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          COLOR=3066993
+          if [ "${{ inputs.status }}" != "success" ]; then
+            COLOR=15158332
+          fi
+
+          curl -H "Content-Type: application/json" -X POST -d "{
+            \"embeds\": [{
+              \"title\": \"${{ inputs.job-name }} Deployment: ${{ inputs.status }}\",
+              \"color\": ${COLOR},
+              \"fields\": [
+                {\"name\": \"Commit\", \"value\": \"${{ inputs.commit-message }}\", \"inline\": false},
+                {\"name\": \"Author\", \"value\": \"${{ inputs.author }}\", \"inline\": true},
+                {\"name\": \"Timestamp\", \"value\": \"${{ inputs.timestamp }}\", \"inline\": true},
+                {\"name\": \"Docker Image\", \"value\": \"${{ inputs.image-tag }}\", \"inline\": false}
+              ],
+              \"footer\": {\"text\": \"GitHub Actions CI/CD\"}
+            }]
+          }" $WEBHOOK_URL

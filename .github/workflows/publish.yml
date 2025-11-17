@@ -1,0 +1,88 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  login-docker:
+    if: ${{ !contains(github.event.head_commit.message, 'chore:') && !contains(github.event.head_commit.message, 'docs:') }}
+    name: Docker Login
+    runs-on: ubuntu-latest
+    outputs:
+      timestamp: ${{ steps.set-timestamp.outputs.timestamp }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        id: login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set timestamp
+        id: set-timestamp
+        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+
+  backend:
+    name: Build & Push Backend
+    runs-on: ubuntu-latest
+    needs: login-docker
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build & Push Backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            shreedhar01/chatapp-backend:latest
+            shreedhar01/chatapp-backend:${{ needs.login-docker.outputs.timestamp }}
+          cache-from: type=registry,ref=shreedhar01/chatapp-backend:latest
+          cache-to: type=registry,ref=shreedhar01/chatapp-backend:cache,mode=max
+
+  notify-backend:
+    name: Notify Discord Backend
+    needs: [backend, login-docker]
+    uses: ./.github/workflows/discord.yml
+    with:
+      status: ${{ needs.backend.result }}
+      job-name: Backend
+      commit-message: ${{ github.event.head_commit.message }}
+      author: ${{ github.event.head_commit.author.name }}
+      timestamp: ${{ needs.login-docker.outputs.timestamp }}
+      image-tag: shreedhar01/chatapp-backend:${{ needs.login-docker.outputs.timestamp }}
+
+  frontend:
+    name: Build & Push Frontend
+    runs-on: ubuntu-latest
+    needs: login-docker
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build & Push Frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          build-args: |
+            VITE_API_URL=https://chatapp-backend-v1.onrender.com
+          tags: |
+            shreedhar01/chatapp-frontend:latest
+            shreedhar01/chatapp-frontend:${{ needs.login-docker.outputs.timestamp }}
+          cache-from: type=registry,ref=shreedhar01/chatapp-frontend:latest
+          cache-to: type=registry,ref=shreedhar01/chatapp-frontend:cache,mode=max
+
+  notify-frontend:
+    name: Notify Discord Frontend
+    needs: [frontend, login-docker]
+    uses: ./.github/workflows/discord.yml
+    with:
+      status: ${{ needs.frontend.result }}
+      job-name: Frontend
+      commit-message: ${{ github.event.head_commit.message }}
+      author: ${{ github.event.head_commit.author.name }}
+      timestamp: ${{ needs.login-docker.outputs.timestamp }}
+      image-tag: shreedhar01/chatapp-frontend:${{ needs.login-docker.outputs.timestamp }}
