@@ -18,9 +18,6 @@ on:
       timestamp:
         required: true
         type: string
-      image-tag:
-        required: true
-        type: string
     secrets:
       DISCORD_WEBHOOK_URL:
         required: true
@@ -55,8 +52,7 @@ jobs:
               \"fields\": [
                 {\"name\": \"Commit\", \"value\": \"${{ inputs.commit-message }}\", \"inline\": false},
                 {\"name\": \"Author\", \"value\": \"${{ inputs.author }}\", \"inline\": true},
-                {\"name\": \"Timestamp\", \"value\": \"${{ inputs.timestamp }}\", \"inline\": true},
-                {\"name\": \"Docker Image\", \"value\": \"${{ inputs.image-tag }}\", \"inline\": false}
+                {\"name\": \"Timestamp\", \"value\": \"${{ inputs.timestamp }}\", \"inline\": true}
               ],
               \"footer\": {\"text\": \"GitHub Actions CI/CD\"},
               \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"

@@ -57,7 +57,6 @@ jobs:
       commit-message: ${{ github.event.head_commit.message }}
       author: ${{ github.event.head_commit.author.name }}
       timestamp: ${{ needs.setup.outputs.timestamp }}
-      image-tag: shreedhar01/chatapp-backend:${{ needs.setup.outputs.timestamp }}
 
   frontend:
     name: Build & Push Frontend
@@ -83,7 +82,7 @@ jobs:
           context: ./frontend
           push: true
           build-args: |
-            VITE_API_URL=https://chatapp-backend-v1.onrender.com
+            VITE_API_URL=https://chat.succeedtrading.com/api
           tags: |
             shreedhar01/chatapp-frontend:latest
             shreedhar01/chatapp-frontend:${{ needs.setup.outputs.timestamp }}
@@ -102,4 +101,37 @@ jobs:
       commit-message: ${{ github.event.head_commit.message }}
       author: ${{ github.event.head_commit.author.name }}
       timestamp: ${{ needs.setup.outputs.timestamp }}
-      image-tag: shreedhar01/chatapp-frontend:${{ needs.setup.outputs.timestamp }}
+
+  deploy:
+    name: Deploy to GCP VM
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.VM_SSH_KEY }}
+
+      - name: Deploy on VM
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} "
+            cd ~/chatapp &&
+            docker compose pull &&
+            docker compose up -d &&
+            docker system prune -f
+          "
+
+  notify-deploy:
+    name: Notify Discord Frontend
+    needs: [deploy, setup]
+    uses: ./.github/workflows/discord.yml
+    secrets:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    with:
+      status: ${{ needs.deploy.result }}
+      job-name: Deploy
+      commit-message: ${{ github.event.head_commit.message }}
+      author: ${{ github.event.head_commit.author.name }}
+      timestamp: ${{ needs.setup.outputs.timestamp }}
+
