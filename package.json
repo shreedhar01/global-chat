@@ -2,11 +2,10 @@
   "name": "chatapp",
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"green,blue\" \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
-    "dev:backend": "pnpm --filter backend dev",
-    "dev:frontend": "pnpm --filter frontend dev",
-    "prepare": "husky",
-    "lint": "concurrently -n \"BACKEND,FRONTEND\" -c \"green,blue\" \"pnpm --filter backend lint\" \"pnpm --filter frontend lint\""
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +15,6 @@
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@commitlint/format": "^20.0.0",
-    "concurrently": "^9.2.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6"
   }

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import axios, { AxiosError } from 'axios'
 import toast from 'react-hot-toast'
 import { AuthContextProvider } from '@/contexts/AuthContext'
+import GoogleSign from '@/components/GoogleSign'
 
 
 export default function SignIn() {
@@ -43,7 +44,7 @@ export default function SignIn() {
     <div className="first">
       <div className="flex flex-col w-full md:w-7xl h-[90vh] justify-center items-center gap-y-4">
         <h1 className="text-xl">Create a account</h1>
-        <form onSubmit={handleSubmit} className="border w-65/100 md:w-25/100 p-4 rounded-xl">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-y-8 border w-65/100 md:w-25/100 p-4 rounded-xl">
           <FieldGroup>
             <FieldSet>
               <Field>
@@ -71,6 +72,12 @@ export default function SignIn() {
             </Field>
           </FieldGroup>
         </form>
+        <div className='flex w-full justify-center'>
+          <p className='font-bold'>OR</p>
+        </div>
+        <div className='flex w-full justify-center'>
+          <GoogleSign />
+        </div>
         {/* {data && <p className="text-red-500">{data?._id}</p>} */}
       </div>
     </div>

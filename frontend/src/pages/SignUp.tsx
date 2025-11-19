@@ -11,6 +11,7 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios, { AxiosError } from "axios"
 import toast from "react-hot-toast"
+import GoogleSign from "@/components/GoogleSign"
 
 
 export default function SignUp() {
@@ -90,6 +91,12 @@ export default function SignUp() {
             </Field>
           </FieldGroup>
         </form>
+        <div className='flex w-full justify-center'>
+          <p className='font-bold'>OR</p>
+        </div>
+        <div className='flex w-full justify-center'>
+          <GoogleSign />
+        </div>
         {/* {error && <p className="text-red-500">{JSON.stringify(error)}</p>} */}
       </div>
     </div>

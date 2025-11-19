@@ -1,8 +1,8 @@
 services:
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     image: shreedhar01/chatapp-backend:latest
     container_name: chatapp-backend
     env_file:
@@ -12,8 +12,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile
       args:
         VITE_API_URL: https://chat.succeedtrading.com/api
     image: shreedhar01/chatapp-frontend:latest
