@@ -15,7 +15,8 @@ services:
       context: .
       dockerfile: apps/frontend/Dockerfile
       args:
-        VITE_API_URL: https://chat.succeedtrading.com/api
+        VITE_API_URL: http://localhost:8000
+        VITE_GOOGLE_CLIENT_ID: 173001847900-ajrmg8md35ks66rjl3eooouvf3a31dfb.apps.googleusercontent.com
     image: shreedhar01/chatapp-frontend:latest
     container_name: chatapp-frontend
     depends_on:

@@ -85,6 +85,7 @@ jobs:
           push: true
           build-args: |
             VITE_API_URL=https://chat.succeedtrading.com/api
+            VITE_GOOGLE_CLIENT_ID=${{secrets.VITE_GOOGLE_CLIENT_ID}}
           tags: |
             shreedhar01/chatapp-frontend:latest
             shreedhar01/chatapp-frontend:${{ needs.setup.outputs.timestamp }}
