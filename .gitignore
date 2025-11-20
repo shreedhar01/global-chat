@@ -3,11 +3,11 @@ node_modules
 committype.txt
 
 # frontend
-frontend/node_modules
-frontend/dist
-frontend/.env
+apps/frontend/node_modules
+apps/frontend/dist
+apps/frontend/.env
 
 # backend
-backend/dist
-backend/node_modules
-backend/.env
+apps/backend/dist
+apps/backend/node_modules
+apps/backend/.env
