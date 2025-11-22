@@ -1,10 +1,9 @@
-import { type Server } from "socket.io"
-import { type CustomSocket } from "../index.js"
+import { type Server, type Socket } from "socket.io"
 import { User } from "../models/user.model.js"
 import { Chat } from "../models/chat.model.js"
 
 export const socketHandler = (io:Server)=>{
-    io.on("connection",async(socket:CustomSocket)=>{
+    io.on("connection",async(socket:Socket)=>{
         const user = await User.findById(socket.userId)
         user!.isOnline = true;
 

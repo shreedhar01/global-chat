@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { User } from "../models/user.model.js";
-import { bcryptHashPassword } from "../utils/bcrypt.passwordhash.js";
+import { asyncHandler } from "../../services/asyncHandler.js";
+import { User } from "../../models/user.model.js";
+import { bcryptHashPassword } from "../../services/bcrypt.passwordhash.js";
 
 export const getAllUser = asyncHandler(async (req: Request, res: Response) => {
     const allUser = await User.countDocuments()

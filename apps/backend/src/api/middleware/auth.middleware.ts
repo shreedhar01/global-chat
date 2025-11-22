@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { jwtVerify } from "../utils/jwt.js";
-import { User } from "../models/user.model.js";
+import { jwtVerify } from "../../services/jwt.js";
+import { User } from "../../models/user.model.js";
 import type mongoose from "mongoose";
 
 declare global {

@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { User } from "../models/user.model.js";
-import { bcryptHashPassword, bcryptComparePassword } from "../utils/bcrypt.passwordhash.js";
-import { jwtSigh } from "../utils/jwt.js";
+import { asyncHandler } from "../../services/asyncHandler.js";
+import { User } from "../../models/user.model.js";
+import { bcryptHashPassword, bcryptComparePassword } from "../../services/bcrypt.passwordhash.js";
+import { jwtSigh } from "../../services/jwt.js";
 import type mongoose from "mongoose";
 
 interface IUser {
