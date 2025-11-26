@@ -1,6 +1,7 @@
 # root
 node_modules
 committype.txt
+k8s
 
 # frontend
 apps/frontend/node_modules
