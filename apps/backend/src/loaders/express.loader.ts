@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-import authRoute from "../api/routes/auth.route.js";
-import userRoute from "../api/routes/user.route.js";
-import chatRoute from "../api/routes/chat.route.js";
+import authRoute from "../api-v1/routes/auth.route.js";
+import userRoute from "../api-v1/routes/user.route.js";
+import chatRoute from "../api-v1/routes/chat.route.js";
 
 export const loadExpress = (): express.Application => {
   const app = express();

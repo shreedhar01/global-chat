@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { asyncHandler } from "../../services/asyncHandler.js";
-import { Chat } from "../../models/chat.model.js";
+import { Chat } from "../models/chat.model.js";
 
 export const getAllChat = asyncHandler(async (req: Request, res: Response) => {
     const page = Number(req.query.page) || 1;

@@ -29,6 +29,7 @@ export default function SignUp() {
         username, email, password
       })
 
+      // user context need to save here
       toast.success("Account created successfully!");
       navigate("/sign-in");
 

@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { asyncHandler } from "../../services/asyncHandler.js";
-import { User } from "../../models/user.model.js";
+import { User } from "../models/user.model.js";
 import { bcryptHashPassword } from "../../services/bcrypt.passwordhash.js";
 
 export const getAllUser = asyncHandler(async (req: Request, res: Response) => {
