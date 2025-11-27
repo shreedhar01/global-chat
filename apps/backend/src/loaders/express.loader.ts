@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import authRoute from "../api-v1/routes/auth.route.js";
 import userRoute from "../api-v1/routes/user.route.js";
 import chatRoute from "../api-v1/routes/chat.route.js";
+import { authorization } from "../api-v1/middleware/auth.middleware.js";
 
 export const loadExpress = (): express.Application => {
   const app = express();
@@ -19,6 +20,11 @@ export const loadExpress = (): express.Application => {
   app.get("/health", (_req, res) => {
     res.status(200).json({ status: "ok" });
   });
+
+  app.get("/me", authorization(), (req: CustomRequest, res) => {
+    res.json({ loggedIn: true, user:req.user });
+  });
+
 
   app.use("/api/v1/auth", authRoute);
   app.use("/api/v1/user", userRoute);

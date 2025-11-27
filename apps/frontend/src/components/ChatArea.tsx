@@ -34,6 +34,7 @@ export default function ChatArea() {
   const topAnchorRef = useRef<HTMLDivElement | null>(null)
   // const wrapperRef = useRef<HTMLDivElement | null>(null)
   const isLoadingRef = useRef(false)
+  const isInitialLoad = useRef(true)
 
   useEffect(() => {
     const loadInitial = async () => {
@@ -77,6 +78,12 @@ export default function ChatArea() {
     const viewport = scrollAreaRef.current.querySelector(
       "[data-radix-scroll-area-viewport]"
     ) as HTMLDivElement | null
+
+    if (isInitialLoad.current && chat && chat.length > 0) {
+      messageEndRef.current.scrollIntoView({ behavior: "auto" })
+      isInitialLoad.current = false
+      return
+    }
 
     if (!viewport) return
 
@@ -166,7 +173,7 @@ export default function ChatArea() {
                     <p className="text-white dark:text-black md:font-medium md:text-xl">{v.sender.username[0]}</p>
                   </div> : null}
                   <div className="flex flex-col justify-end ">
-                    <p className={`${user?.username !== v.sender.username ? "bg-neutral-800" : "bg-neutral-600"} m-2 p-2 rounded-xl w-fit`}>{v.message}</p>
+                    <p className={`${user?.username !== v.sender.username ? "text-white bg-neutral-800" : "text-white bg-neutral-600"} m-2 p-2 rounded-xl w-fit`}>{v.message}</p>
                     <p className={`flex ${user?.username !== v.sender.username ? "justify-start" : "justify-end"} text-xs text-neutral-500`}>{new Date(v.createdAt).toLocaleString()}</p>
                   </div>
                   {user?.username === v.sender.username ? <div className="flex items-center justify-center bg-neutral-500 rounded-full m-2 h-8 w-8">

@@ -11,6 +11,7 @@ import Header from './components/Header';
 import { Toaster } from "react-hot-toast"
 import { useContext } from 'react';
 import { AuthContextProvider } from './contexts/AuthContext';
+import { Loading } from './components/Loading';
 
 export default function App() {
   return (
@@ -38,9 +39,10 @@ export default function App() {
 }
 
 const ProtectedRoute = () => {
-  const { user } = useContext(AuthContextProvider)
-  if (!user) {
-    return <Navigate to="/sign-up" replace />
+  const { user,loading } = useContext(AuthContextProvider)
+  if (loading) {
+    return <Loading text='Authenticate'></Loading>
   }
-  return <Outlet />
+
+  return user ? <Outlet /> : <Navigate to="/sign-in" replace />;
 }

@@ -20,7 +20,7 @@ const Header = () => {
             const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
             toast.success(res.data.message)
             setUser(null)
-            navigate("/sign-up")
+            navigate("/sign-in")
         } catch (error: unknown) {
             console.error("Error:", error);
             const axiosError = error as AxiosError<{ message?: string }>
